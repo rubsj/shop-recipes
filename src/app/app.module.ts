@@ -12,6 +12,7 @@ import { HeaderComponent } from './header/header.component';
 import { RecipeComponent } from './recipe/recipe.component';
 import { ShoppingComponent } from './shopping/shopping.component';
 import { ToggleDropdownDirective } from '../libs/directive/dropdown.directive';
+import { ShoppingListService } from '../libs/services/shopping-list.service';
 
 
 @NgModule({
@@ -31,7 +32,7 @@ import { ToggleDropdownDirective } from '../libs/directive/dropdown.directive';
     BrowserModule,
 
   ],
-  providers: [],
+  providers: [ShoppingListService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
