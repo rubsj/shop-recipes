@@ -14,14 +14,4 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
   }
 
-  onShoppingListClick(){
-    this.shoppingListSelected.emit(true);
-    this.recepiesSelected.emit(false);
-  }
-
-  onRecepiesClick(){
-    this.recepiesSelected.emit(true);
-    this.shoppingListSelected.emit(false);
-  }
-
 }

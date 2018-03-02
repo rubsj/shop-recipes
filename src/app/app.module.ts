@@ -13,6 +13,11 @@ import { RecipeComponent } from './recipe/recipe.component';
 import { ShoppingComponent } from './shopping/shopping.component';
 import { ToggleDropdownDirective } from '../libs/directive/dropdown.directive';
 import { ShoppingListService } from '../libs/services/shopping-list.service';
+import { AppRoutingModule } from './app-routing.module';
+import { Router } from '@angular/router';
+import { RecipeEditComponent } from './recipe/recipe-edit/recipe-edit.component';
+import { RecipeAddComponent } from './recipe/recipe-add/recipe-add.component';
+import { RecipeStartComponent } from './recipe/recipe-start/recipe-start.component';
 
 
 @NgModule({
@@ -26,11 +31,14 @@ import { ShoppingListService } from '../libs/services/shopping-list.service';
     HeaderComponent,
     RecipeComponent,
     ShoppingComponent,
-    ToggleDropdownDirective
+    ToggleDropdownDirective,
+    RecipeEditComponent,
+    RecipeAddComponent,
+    RecipeStartComponent
   ],
   imports: [
     BrowserModule,
-
+    AppRoutingModule
   ],
   providers: [ShoppingListService],
   bootstrap: [AppComponent]
