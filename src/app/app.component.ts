@@ -7,14 +7,4 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
-  selRecipe :boolean
-  selShopping : boolean;
-
-  selectRecipe(value : boolean){
-     this.selRecipe = value;
-  }
-
-  selectShopping(value : boolean){
-      this.selShopping = value;
-  }
 }
