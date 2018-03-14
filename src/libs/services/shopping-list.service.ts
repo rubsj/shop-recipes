@@ -10,13 +10,18 @@ export class ShoppingListService{
 
  addIngredient(ingredient : Ingredient){
      this.ingredients.push(ingredient);
-     this.ingredientAdded.next(this.ingredients.slice());
+     this.ingredientsChanged.next(this.ingredients.slice());
  }
 
-  ingredientAdded = new Subject<Ingredient[]>();
+  ingredientsChanged = new Subject<Ingredient[]>();
+  startedEditing = new Subject<number>();
 
   getIngredients(){
     return this.ingredients.slice();
+  }
+
+  getIngredient(index:number){
+    return this.ingredients[index];
   }
 
   addIngredients(ingredients : Ingredient[]){
@@ -24,6 +29,19 @@ export class ShoppingListService{
       this.ingredients.push(item);
     })*/
     this.ingredients.push(...ingredients);
-    this.ingredientAdded.next(this.ingredients.slice());
+    this.ingredientsChanged.next(this.ingredients.slice());
+  }
+
+  updateingredient(index:number , ingredient:Ingredient){
+    console.log("updating index" , index);
+    this.ingredients[index] = ingredient;
+    this.ingredientsChanged.next(this.ingredients.slice());
+
+  }
+
+  deleteIngredient(index:number){
+    console.log("deleting index" , index );
+    this.ingredients.slice(index, 1);
+    this.ingredientsChanged.next(this.ingredients.slice());
   }
 }

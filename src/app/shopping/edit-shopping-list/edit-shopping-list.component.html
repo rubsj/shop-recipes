@@ -1,20 +1,24 @@
 <div class="row">
   <div class="col-xs-12">
-    <form >
+    <form [formGroup]="addIngredientsForm" (ngSubmit)="updateIngredient()">
       <div class="row">
         <div class="col-sm-5 form-group">
-          <label for="name">Name</label>
-          <input type="text" class="form-control" id="name" #nameInput>
-        </div>
-        <div class="col-sm-2 form-group">
-          <label for="quantity">Quantity</label>
-          <input type="text" class="form-control" id="quantity" #quantityInput>
-        </div>
+          <label for="name" >Name</label>
+          <input type="text" class="form-control" id="name" formControlName="name" required>
 
+        </div>
+        <div class="col-sm-2 form-group ">
+          <label for="quantity">Quantity</label>
+          <input type="text" class="form-control" id="quantity" formControlName="quantity" required>
+        </div>
         <div class="col-xs-12">
-          <button class="btn btn-success" type="button" (click)="addIngredient()">Add</button>
-          <button class="btn btn-warning" type="button">Delete</button>
-          <button class="btn btn-primary" type="button">Clear</button>
+        <span class="help-block" *ngIf="!addIngredientsForm.get('name').valid && addIngredientsForm.get('name').touched"> Please enter valid user name !</span>
+        <span class="help-block" *ngIf="!addIngredientsForm.get('quantity').valid && addIngredientsForm.get('quantity').touched"> Please enter valid quantity !</span>
+        </div>
+        <div class="col-xs-12">
+          <button class="btn btn-success" type="submit" [disabled]="!addIngredientsForm.valid" >{{editMode? "Edit" : "Add"}}</button>
+          <button class="btn btn-warning" type="button" (click)="deleteIngredient()" *ngIf="editMode">Delete</button>
+          <button class="btn btn-primary" type="button" (click)="clearIngredient()">Clear</button>
         </div>
       </div>
     </form>
