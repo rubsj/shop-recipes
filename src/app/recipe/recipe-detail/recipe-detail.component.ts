@@ -12,7 +12,7 @@ import { RecipeService } from '../../../libs/services/recipe.service';
 export class RecipeDetailComponent implements OnInit {
 
   @Input() selectedRecipe : Recipe;
-  constructor(private shoppingList: ShoppingListService, private route : ActivatedRoute , private recipeService :RecipeService) { }
+  constructor(private shoppingList: ShoppingListService, private route : ActivatedRoute , private recipeService :RecipeService, private router:Router) { }
 
   ngOnInit() {
     const id = +this.route.snapshot.params['id'];
@@ -23,7 +23,14 @@ export class RecipeDetailComponent implements OnInit {
   }
 
   sendIngredientsToshoppingList(){
+    console.log("sendIngredientsToshoppingList" , this.selectedRecipe);
       this.shoppingList.addIngredients(this.selectedRecipe.ingredients);
+  }
+
+  onDelete(){
+    console.log("On delete called for ",this.selectedRecipe);
+    this.recipeService.deleteRecipe(this.selectedRecipe.id);
+    this.router.navigate(['recipes']);
   }
 
 }
