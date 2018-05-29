@@ -1,34 +1,31 @@
-///<reference path="../../../../node_modules/@angular/core/src/metadata/lifecycle_hooks.d.ts"/>
-import { Component, DoCheck, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Ingredient } from '../../../libs/domain/ingredient.model';
 import { ShoppingListService } from '../../../libs/services/shopping-list.service';
-import { Subscription } from 'rxjs/Subscription';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs/Observable';
+import { AppState } from '../store/reducers/shopping-list.reducers';
+import * as ShoppingListActions from '../store/actions/shopping-list.actions';
 
 @Component({
   selector: 'app-view-shopping-list',
   templateUrl: './view-shopping-list.component.html',
   styleUrls: ['./view-shopping-list.component.css'],
 })
-export class ViewShoppingListComponent implements OnInit , OnDestroy{
+export class ViewShoppingListComponent implements OnInit {
 
-  ingredients :Ingredient[];
-  subscription:Subscription;
-  constructor(private shoppingListService: ShoppingListService) { }
+  shoppingListState: Observable<{ingredients: Ingredient[]}>;
+
+
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
-   this.subscription= this.shoppingListService.ingredientsChanged.subscribe((ingredients: Ingredient[]) =>{
-       this.ingredients= ingredients;
-    });
-    this.ingredients= this.shoppingListService.getIngredients();
+    this.shoppingListState = this.store.select('shoppingList');
   }
 
-  ngOnDestroy(){
-    this.subscription.unsubscribe();
-  }
-
-  onEditItem(idx : number){
-    console.log("started editing index" , idx);
-    this.shoppingListService.startedEditing.next(idx);
+  onEditItem(idx: number) {
+    console.log('started editing index', idx);
+ //   this.shoppingListService.startedEditing.next(idx);
+    this.store.dispatch(new ShoppingListActions.StartEdit(idx));
   }
 
 }

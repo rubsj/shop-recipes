@@ -4,9 +4,10 @@ import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class ShoppingListService{
- private  ingredients :Ingredient[] = [
+ private  ingredients :Ingredient[];
+ /*= [
     {name : 'Rice' , quantity : 500},
-    {name: 'tomato', quantity: 5}];
+    {name: 'tomato', quantity: 5}];*/
 
  addIngredient(ingredient : Ingredient){
      this.ingredients.push(ingredient);
@@ -16,21 +17,18 @@ export class ShoppingListService{
   ingredientsChanged = new Subject<Ingredient[]>();
   startedEditing = new Subject<number>();
 
-  getIngredients(){
+/*  getIngredients(){
     return this.ingredients.slice();
-  }
+  }*/
 
   getIngredient(index:number){
     return this.ingredients[index];
   }
 
-  addIngredients(ingredients : Ingredient[]){
-    /*ingredients.forEach(item =>{
-      this.ingredients.push(item);
-    })*/
+/*  addIngredients(ingredients : Ingredient[]){
     this.ingredients.push(...ingredients);
     this.ingredientsChanged.next(this.ingredients.slice());
-  }
+  }*/
 
   updateingredient(index:number , ingredient:Ingredient){
     console.log("updating index" , index);

@@ -1,9 +1,11 @@
-import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Ingredient } from '../../../libs/domain/ingredient.model';
 import { ShoppingListService } from '../../../libs/services/shopping-list.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
+import { Store } from '@ngrx/store';
+import * as ShoppingListActions from '../store/actions/shopping-list.actions';
+import { AppState } from '../store/reducers/shopping-list.reducers';
 
 @Component({
   selector: 'app-edit-shopping-list',
@@ -15,14 +17,11 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
 
   addIngredientsForm: FormGroup;
   editingSubscription: Subscription;
-  editMode =false;
-  editedItemIndex :number;
-  editedIngredient:Ingredient;
+  editMode = false;
+  editedItemIndex: number;
+  editedIngredient: Ingredient;
 
-  constructor(private shoppingListService: ShoppingListService) { }
-
-  /* @ViewChild('nameInput') nameElement : ElementRef;
-   @ViewChild('quantityInput') quantityElement : ElementRef;*/
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
     this.addIngredientsForm = new FormGroup({
@@ -30,47 +29,54 @@ export class EditShoppingListComponent implements OnInit, OnDestroy {
       'quantity': new FormControl('', [Validators.required, Validators.pattern('^[0-9]*$')]),
     });
 
-    this.editingSubscription = this.shoppingListService.startedEditing.subscribe((index: number)=>{
-       this.editMode=true;
-       this.editedItemIndex = index;
-       this.editedIngredient = this.shoppingListService.getIngredient(index);
-       this.addIngredientsForm.setValue({
-         'name' : this.editedIngredient.name,
-         'quantity':   this.editedIngredient.quantity
-       })
-    });
+    this.editingSubscription = this.store.select('shoppingList')
+      .subscribe(data => {
+        if (data.editedIngredientIndex > -1) {
+          this.editMode = true;
+          this.editedItemIndex = data.editedIngredientIndex;
+          this.editedIngredient = data.editedIngredient;
+          this.addIngredientsForm.setValue({
+            'name': this.editedIngredient.name,
+            'quantity': this.editedIngredient.quantity,
+          });
+        } else {
+          this.editMode = false;
+        }
+      });
   }
 
   updateIngredient() {
     let ingredientToAdd: Ingredient = { name: '', quantity: 0 };
-    /* ingredientToAdd.name= this.nameElement.nativeElement.value;
-     ingredientToAdd.quantity = this.quantityElement.nativeElement.value;*/
     ingredientToAdd.name = this.addIngredientsForm.get('name').value;
     ingredientToAdd.quantity = this.addIngredientsForm.get('quantity').value;
     console.log(ingredientToAdd);
     console.log(this.editMode);
-    if(this.editMode){
-      this.shoppingListService.updateingredient(this.editedItemIndex , ingredientToAdd);
+    if (this.editMode) {
+      //this.shoppingListService.updateingredient(this.editedItemIndex , ingredientToAdd);
+      this.store.dispatch(new ShoppingListActions.UpdateIngredient({ ingredient: ingredientToAdd }));
 
-    }else{
-      this.shoppingListService.addIngredient(ingredientToAdd);
+    } else {
+      //this.shoppingListService.addIngredient(ingredientToAdd);
+      this.store.dispatch(new ShoppingListActions.AddIngredient(ingredientToAdd));
     }
     this.editMode = false;
     this.addIngredientsForm.reset();
   }
 
-  clearIngredient(){
+  clearIngredient() {
     this.addIngredientsForm.reset();
     this.editMode = false;
   }
 
 
   ngOnDestroy() {
+    this.store.dispatch(new ShoppingListActions.StopEdit());
     this.editingSubscription.unsubscribe();
   }
 
-  deleteIngredient(){
-    this.shoppingListService.deleteIngredient(this.editedItemIndex);
+  deleteIngredient() {
+    // this.shoppingListService.deleteIngredient(this.editedItemIndex);
+    this.store.dispatch(new ShoppingListActions.DeleteIngredient());
     this.clearIngredient();
   }
 }

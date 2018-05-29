@@ -18,6 +18,11 @@ import { RecipeEditComponent } from './recipe/recipe-edit/recipe-edit.component'
 import { RecipeStartComponent } from './recipe/recipe-start/recipe-start.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RecipeService } from '../libs/services/recipe.service';
+import { StoreModule } from '@ngrx/store';
+import { shoppingListReducer } from './shopping/store/reducers/shopping-list.reducers';
+import { Toggle01Component } from './toggle/toggle01/toggle01.component';
+import { SwitchComponent } from './switch-component/switch-component';
+import { ToggleComponent } from './toggle/toggle.component';
 
 
 @NgModule({
@@ -33,12 +38,16 @@ import { RecipeService } from '../libs/services/recipe.service';
     ShoppingComponent,
     ToggleDropdownDirective,
     RecipeEditComponent,
-    RecipeStartComponent
+    RecipeStartComponent,
+    Toggle01Component ,
+    SwitchComponent,
+    ToggleComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    StoreModule.forRoot({shoppingList: shoppingListReducer})
   ],
   providers: [ShoppingListService,RecipeService],
   bootstrap: [AppComponent]
