@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Ingredient } from '../domain/ingredient.model';
-import { Subject } from 'rxjs/Subject';
+import {Subject} from "rxjs";
+
 
 @Injectable()
 export class ShoppingListService{

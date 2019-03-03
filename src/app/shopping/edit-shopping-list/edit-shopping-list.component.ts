@@ -1,11 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Ingredient } from '../../../libs/domain/ingredient.model';
-import { ShoppingListService } from '../../../libs/services/shopping-list.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import * as ShoppingListActions from '../store/actions/shopping-list.actions';
 import { AppState } from '../store/reducers/shopping-list.reducers';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-edit-shopping-list',

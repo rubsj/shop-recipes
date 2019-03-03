@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Ingredient } from '../../../libs/domain/ingredient.model';
-import { ShoppingListService } from '../../../libs/services/shopping-list.service';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs/Observable';
 import { AppState } from '../store/reducers/shopping-list.reducers';
 import * as ShoppingListActions from '../store/actions/shopping-list.actions';
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-view-shopping-list',
